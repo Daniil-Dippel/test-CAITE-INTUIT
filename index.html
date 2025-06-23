@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест для команды ЦАИТО МУИТ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f7f9fc;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .question {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .question h3 {
+            margin: 0 0 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Тест для команды ЦАИТО МУИТ</h1>
+    <form id="quiz-form">
+        <div class="question">
+            <h3>Ваше имя</h3>
+            <input type="text" id="username" placeholder="Введите ваше имя..." required>
+        </div>
+    </form>
+    <button onclick="submitAnswers()">Отправить</button>
+
+    <script>
+        // Проверка: если уже проходил тест — блокируем
+        if (localStorage.getItem("alreadySubmitted") === "true") {
+            document.body.innerHTML = "<h2 style='text-align:center;'>Вы уже прошли тест. Спасибо!</h2>";
+        } else {
+            const questions = [
+                "Что такое 'сигмоида' в ИИ?",
+                "Назови HTTP-методы, используемые в REST API.",
+                "Чем ИИ отличается от обычной программы?",
+                "Хочешь ли ты программировать в команде?",
+                "Чем отличается HTML от CSS?",
+                "Что такое AJAX и зачем он нужен?",
+                "Назови популярный backend-фреймворк на Python.",
+                "Что такое SQL-инъекция и как её можно предотвратить?",
+                "В чём разница между Vue.js и React?",
+                "Что такое шейдер в 3D-графике?",
+                "Какой основной игровой движок используют для VR?",
+                "Какой сюжет и цель в нашей VR-игре?",
+                "Что, по-твоему, нужно для разработки игры?",
+                "Что такое токенизация текста?",
+                "Какие команды ты бы дал роботу, чтобы он проехал вперёд и повернул?",
+                "Назови три популярных модели искусственного интеллекта.",
+                "Откуда ИИ берёт слова, чтобы ответить на вопрос?",
+                "Что такое overfitting и как его избежать?",
+                "Что такое микроконтроллер? Приведи пример.",
+                "Что такое ИК-датчик?",
+                "Зачем нужен сервопривод?",
+                "Что такое нейросеть простыми словами?",
+                "Объясни, как работает тележка с управлением по Bluetooth.",
+                "Как работает ультразвуковой датчик?",
+                "По какому плану ты тестируешь свою работу?",
+                "Напиши состав команды и обязанности каждого участника.",
+                "Что такое баг-репорт и что в нём обязательно должно быть?",
+                "Какие форматы изображений лучше всего подходят для веб-логотипов?",
+                "В каких программах или приложениях ты обычно работаешь?",
+                "Зачем нужно программировать робота — разве он не работает сам?",
+                "Какие принципы важны при презентации на конференциях?",
+                "Какие KPI ты бы использовал для оценки SMM-кампании?",
+                "Что такое ‘call to action’ в контенте?",
+                "Какую стратегию постинга ты бы выбрал для Instagram и сайта?",
+                "Что ты сделал за всё время участия в команде?",
+                "Кто такой Кащей?",
+                "Может ли ИИ обучаться сам? Как это происходит?",
+                "Какая сейчас первоначальная задача в команде?",
+                "С чем Ярик играется по своему заданию?",
+                "Для чего нужен искусственный интеллект?"
+            ];
+
+            const form = document.getElementById("quiz-form");
+            questions.forEach((q, i) => {
+                const div = document.createElement("div");
+                div.className = "question";
+                div.innerHTML = `<h3>${i + 1}. ${q}</h3><input type="text" id="q${i + 1}" placeholder="Введите ваш ответ..." required>`;
+                form.appendChild(div);
+            });
+
+            // Делает submitAnswers доступной глобально
+            window.submitAnswers = function () {
+                const username = document.getElementById("username").value.trim();
+                if (!username) {
+                    alert("Пожалуйста, введите имя.");
+                    return;
+                }
+
+                const answers = { username };
+                questions.forEach((_, i) => {
+                    answers["q" + (i + 1)] = document.getElementById("q" + (i + 1)).value.trim();
+                });
+
+                fetch("https://6859802a138a18086dfea5ea.mockapi.io/kashchei777/nelCH", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(answers)
+                })
+                    .then(() => {
+                        localStorage.setItem("alreadySubmitted", "true");
+                        location.reload(); // Перезагрузка страницы
+                    })
+                    .catch(error => alert("Ошибка при отправке: " + error));
+            }
+        }
+    </script>
+</body>
+
+</html>
